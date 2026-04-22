@@ -1,5 +1,4 @@
-<h1>Edit Task Page</h1>
-
+<h1><%= t('views.tasks.edit.title') %></h1>
 <% if @task.errors.any? %>
   <ul>
     <% @task.errors.full_messages.each do |msg| %>
@@ -7,17 +6,15 @@
     <% end %>
   </ul>
 <% end %>
-
 <%= form_with model: @task, local: true do |f| %>
   <div>
-    <%= f.label :title, 'Title' %>
+    <%= f.label :title, Task.human_attribute_name(:title) %>
     <%= f.text_field :title %>
   </div>
   <div>
-    <%= f.label :content, 'Content' %>
+    <%= f.label :content, Task.human_attribute_name(:content) %>
     <%= f.text_area :content %>
   </div>
-  <%= f.submit 'Update Task', id: 'update-task' %>
+  <%= f.submit t('views.tasks.edit.submit'), id: 'update-task' %>
 <% end %>
-
-<%= link_to 'Back', tasks_path, id: 'back' %>
+<%= link_to t('views.tasks.edit.back'), tasks_path, id: 'back' %>
