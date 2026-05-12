@@ -5,9 +5,14 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+Task.destroy_all
+
 50.times do |i|
   Task.create!(
-    title: "Task #{i + 1}",
-    content: "Content for task #{i + 1}"
+    title: "task_#{i + 1}",
+    content: "Content #{i + 1}",
+    deadline_on: Date.today - i.days,
+    priority: [:low, :medium, :high][i % 3],
+    status: [:not_started, :in_progress, :completed][i % 3]
   )
 end

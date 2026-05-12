@@ -15,6 +15,18 @@
     <%= f.label :content, Task.human_attribute_name(:content) %>
     <%= f.text_area :content %>
   </div>
+  <div>
+    <%= f.label :deadline_on, Task.human_attribute_name(:deadline_on) %>
+    <%= f.date_field :deadline_on %>
+  </div>
+  <div>
+    <%= f.label :priority, Task.human_attribute_name(:priority) %>
+    <%= f.select :priority, Task.priorities.keys.map { |p| [t("priority.#{p}"), p] }, { include_blank: true } %>
+  </div>
+  <div>
+    <%= f.label :status, Task.human_attribute_name(:status) %>
+    <%= f.select :status, Task.statuses.keys.map { |s| [t("status.#{s}"), s] }, { include_blank: true } %>
+  </div>
   <%= f.submit t('views.tasks.edit.submit'), id: 'update-task' %>
 <% end %>
 <%= link_to t('views.tasks.edit.back'), tasks_path, id: 'back' %>

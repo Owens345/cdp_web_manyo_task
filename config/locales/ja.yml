@@ -7,6 +7,9 @@ ja:
         title: タイトル
         content: 内容
         created_at: 作成日時
+        deadline_on: 終了期限
+        priority: 優先度
+        status: ステータス
     errors:
       models:
         task:
@@ -15,6 +18,12 @@ ja:
               blank: "タイトルを入力してください"
             content:
               blank: "内容を入力してください"
+            deadline_on:
+              blank: "終了期限を入力してください"
+            priority:
+              blank: "優先度を入力してください"
+            status:
+              blank: "ステータスを入力してください"
   views:
     tasks:
       index:
@@ -25,6 +34,12 @@ ja:
         edit: 編集
         destroy: 削除
         confirm: 本当に削除してもよろしいですか？
+        deadline_on: 終了期限
+        priority: 優先度
+        status: ステータス
+        search_title: タイトル
+        search_status: ステータス
+        search_button: 検索
       new:
         title: タスク登録ページ
         submit: 登録する
@@ -37,6 +52,14 @@ ja:
         title: タスク編集ページ
         submit: 更新する
         back: 戻る
+  priority:
+    low: 低
+    medium: 中
+    high: 高
+  status:
+    not_started: 未着手
+    in_progress: 着手中
+    completed: 完了
   flash:
     task:
       created: タスクを登録しました
