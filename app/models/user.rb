@@ -4,8 +4,8 @@ class User < ApplicationRecord
 
   validates :name, presence: true
   validates :email, presence: true, uniqueness: { case_sensitive: false }
-  validates :password, length: { minimum: 6 }, allow_nil: true
-
+  validates :password, length: { minimum: 6 }, allow_blank: false, on: :create
+  validates :password, length: { minimum: 6 }, allow_nil: true, on: :update
   before_save :downcase_email
   before_destroy :check_admin_count
   before_update :check_admin_update
