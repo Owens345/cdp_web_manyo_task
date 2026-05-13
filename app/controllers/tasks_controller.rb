@@ -1,23 +1,25 @@
 class TasksController < ApplicationController
+  before_action :require_login
   before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :check_task_owner, only: [:show, :edit, :update, :destroy]
 
   def index
     @tasks = if params[:search].present?
       if params[:search][:title].present? && params[:search][:status].present?
-        Task.search_title_and_status(params[:search][:title], params[:search][:status])
+        current_user.tasks.search_title_and_status(params[:search][:title], params[:search][:status])
       elsif params[:search][:title].present?
-        Task.search_title(params[:search][:title])
+        current_user.tasks.search_title(params[:search][:title])
       elsif params[:search][:status].present?
-        Task.search_status(params[:search][:status])
+        current_user.tasks.search_status(params[:search][:status])
       else
-        Task.latest
+        current_user.tasks.latest
       end
     elsif params[:sort_deadline_on]
-      Task.sort_deadline
+      current_user.tasks.sort_deadline
     elsif params[:sort_priority]
-      Task.sort_priority
+      current_user.tasks.sort_priority
     else
-      Task.latest
+      current_user.tasks.latest
     end
     @tasks = @tasks.page(params[:page]).per(10)
   end
@@ -30,7 +32,7 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.new(task_params)
+    @task = current_user.tasks.new(task_params)
     if @task.save
       redirect_to tasks_path, notice: t('flash.task.created')
     else
@@ -58,6 +60,12 @@ class TasksController < ApplicationController
 
   def set_task
     @task = Task.find(params[:id])
+  end
+
+  def check_task_owner
+    unless @task.user == current_user
+      redirect_to tasks_path, alert: 'アクセス権限がありません'
+    end
   end
 
   def task_params
