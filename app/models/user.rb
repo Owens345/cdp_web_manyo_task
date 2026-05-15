@@ -2,6 +2,8 @@ class User < ApplicationRecord
   has_many :tasks, dependent: :destroy
   has_secure_password
 
+  attr_accessor :password_raw
+
   validates :name, presence: true
   validates :email, presence: true, uniqueness: { case_sensitive: false }
   validates :password, length: { minimum: 6 }, allow_blank: false, on: :create
@@ -12,10 +14,15 @@ class User < ApplicationRecord
   before_destroy :check_admin_count
   before_update :check_admin_update
 
+  def password=(val)
+    @password_raw = val
+    super
+  end
+
   private
 
   def password_not_blank_on_update
-    if password == ''
+    if @password_raw == ''
       errors.add(:password, :too_short, count: 6)
     end
   end
