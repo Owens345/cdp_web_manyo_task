@@ -2,6 +2,7 @@ ja:
   activerecord:
     models:
       task: タスク
+      user: ユーザ
     attributes:
       task:
         title: タイトル
@@ -10,6 +11,11 @@ ja:
         deadline_on: 終了期限
         priority: 優先度
         status: ステータス
+      user:
+        name: 名前
+        email: メールアドレス
+        password: パスワード
+        password_confirmation: パスワード（確認）
     errors:
       models:
         task:
@@ -24,6 +30,18 @@ ja:
               blank: "優先度を入力してください"
             status:
               blank: "ステータスを入力してください"
+        user:
+          attributes:
+            name:
+              blank: "名前を入力してください"
+            email:
+              blank: "メールアドレスを入力してください"
+              taken: "メールアドレスはすでに使用されています"
+            password:
+              blank: "パスワードを入力してください"
+              too_short: "パスワードは6文字以上で入力してください"
+            password_confirmation:
+              confirmation: "パスワード（確認）とパスワードの入力が一致しません"
   views:
     tasks:
       index:

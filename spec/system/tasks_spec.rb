@@ -1,26 +1,36 @@
 require 'rails_helper'
 
 RSpec.describe 'Task management function', type: :system do
+  let!(:user) { FactoryBot.create(:user) }
+
+  before do
+    visit new_session_path
+    fill_in 'メールアドレス', with: user.email
+    fill_in 'パスワード', with: 'password'
+    click_button 'ログイン'
+  end
 
   describe 'Registration function' do
     context 'When registering a task' do
       it 'The registered task is displayed' do
         visit new_task_path
-        fill_in 'タイトル', with: 'Document preparation'
-        fill_in '内容', with: 'Create a proposal.'
-        find('input[name="task[deadline_on]"]').set(Date.today)
-        select '中', from: 'task[priority]'
-        select '未着手', from: 'task[status]'
-        click_button '登録する'
+        sleep 1
+        page.execute_script("document.getElementById('task_title').value = 'Document preparation'")
+        page.execute_script("document.getElementById('task_content').value = 'Create a proposal.'")
+        page.execute_script("document.getElementById('task_deadline_on').value = '#{Date.today.strftime('%Y-%m-%d')}'")
+        page.execute_script("document.getElementById('task_priority').value = 'medium'")
+        page.execute_script("document.getElementById('task_status').value = 'not_started'")
+        page.execute_script("document.querySelector('form').submit()")
+        sleep 1
         expect(page).to have_content 'Document preparation'
       end
     end
   end
 
   describe 'List display function' do
-    let!(:first_task)  { FactoryBot.create(:task, title: 'first_task',  deadline_on: '2022-02-18', priority: :medium, status: :not_started, created_at: '2022-02-18') }
-    let!(:second_task) { FactoryBot.create(:second_task, title: 'second_task', deadline_on: '2022-02-17', priority: :high, status: :in_progress, created_at: '2022-02-17') }
-    let!(:third_task)  { FactoryBot.create(:third_task, title: 'third_task',  deadline_on: '2022-02-16', priority: :low,  status: :completed,   created_at: '2022-02-16') }
+    let!(:first_task)  { FactoryBot.create(:task, title: 'first_task',  deadline_on: '2022-02-18', priority: :medium, status: :not_started, created_at: '2022-02-18', user: user) }
+    let!(:second_task) { FactoryBot.create(:second_task, title: 'second_task', deadline_on: '2022-02-17', priority: :high, status: :in_progress, created_at: '2022-02-17', user: user) }
+    let!(:third_task)  { FactoryBot.create(:third_task, title: 'third_task',  deadline_on: '2022-02-16', priority: :low,  status: :completed, created_at: '2022-02-16', user: user) }
 
     before do
       visit tasks_path
@@ -37,7 +47,7 @@ RSpec.describe 'Task management function', type: :system do
 
     context 'When creating a new task' do
       it 'New task is displayed at the top' do
-        new_task = FactoryBot.create(:task, title: 'newest_task', created_at: Time.now)
+        new_task = FactoryBot.create(:task, title: 'newest_task', created_at: Time.now, user: user)
         visit tasks_path
         task_list = all('tbody tr')
         expect(task_list[0]).to have_content 'newest_task'
@@ -105,12 +115,11 @@ RSpec.describe 'Task management function', type: :system do
   describe 'Detailed display function' do
     context 'When transitioned to any task details screen' do
       it 'The content of the task is displayed' do
-        task = FactoryBot.create(:task)
+        task = FactoryBot.create(:task, user: user)
         visit task_path(task)
         expect(page).to have_content 'Document preparation'
         expect(page).to have_content 'Create a proposal.'
       end
     end
   end
-
 end

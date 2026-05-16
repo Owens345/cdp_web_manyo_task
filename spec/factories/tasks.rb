@@ -5,6 +5,7 @@ FactoryBot.define do
     deadline_on { Date.today }
     priority { :medium }
     status { :not_started }
+    association :user
   end
 
   factory :second_task, class: Task do
@@ -13,6 +14,7 @@ FactoryBot.define do
     deadline_on { '2022-02-17' }
     priority { :high }
     status { :in_progress }
+    association :user
   end
 
   factory :third_task, class: Task do
@@ -21,5 +23,6 @@ FactoryBot.define do
     deadline_on { '2022-02-16' }
     priority { :low }
     status { :completed }
+    association :user
   end
 end

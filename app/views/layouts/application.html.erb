@@ -9,11 +9,25 @@
   </head>
   <body>
     <nav>
-      <%= link_to t('nav.tasks_index'), tasks_path, id: 'tasks-index' %>
-      <%= link_to t('nav.new_task'), new_task_path, id: 'new-task' %>
+      <% if logged_in? %>
+        <%= link_to 'タスク一覧', tasks_path, id: 'tasks-index' %>
+        <%= link_to 'タスクを登録する', new_task_path, id: 'new-task' %>
+        <%= link_to 'アカウント', user_path(current_user), id: 'account-setting' %>
+        <%= link_to 'ログアウト', logout_path, method: :delete, id: 'sign-out' %>
+        <% if current_user.admin? %>
+          <%= link_to 'ユーザ一覧', admin_users_path, id: 'users-index' %>
+          <%= link_to 'ユーザを登録する', new_admin_user_path, id: 'add-user' %>
+        <% end %>
+      <% else %>
+        <%= link_to 'アカウント登録', new_user_path, id: 'sign-up' %>
+        <%= link_to 'ログイン', new_session_path, id: 'sign-in' %>
+      <% end %>
     </nav>
     <% if notice %>
       <p><%= notice %></p>
+    <% end %>
+    <% if alert %>
+      <p><%= alert %></p>
     <% end %>
     <%= yield %>
   </body>
