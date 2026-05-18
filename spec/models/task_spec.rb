@@ -49,6 +49,18 @@ RSpec.describe 'Task model function', type: :model do
       end
     end
 
+    context 'When searching by label' do
+      it 'All tasks with that label are displayed.' do
+        label = FactoryBot.create(:label, user: user)
+        task_with_label = FactoryBot.create(:task, title: 'labeled_task', user: user)
+        task_with_label.labels << label
+        task_without_label = FactoryBot.create(:task, title: 'unlabeled_task', user: user)
+        expect(label.tasks).to include(task_with_label)
+        expect(label.tasks).not_to include(task_without_label)
+        expect(label.tasks.count).to eq 1
+      end
+    end
+
     context 'When performing fuzzy search and status search Title' do
       it 'Refine your search to tasks that contain the search word Title and match the status exactly.' do
         expect(Task.search_title_and_status('second', 'in_progress')).to include(second_task)

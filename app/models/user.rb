@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_many :tasks, dependent: :destroy
   has_secure_password
+  has_many :labels, dependent: :destroy
 
   attr_accessor :password_raw
 

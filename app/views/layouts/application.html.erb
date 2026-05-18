@@ -14,6 +14,8 @@
         <%= link_to 'タスクを登録する', new_task_path, id: 'new-task' %>
         <%= link_to 'アカウント', user_path(current_user), id: 'account-setting' %>
         <%= link_to 'ログアウト', logout_path, method: :delete, id: 'sign-out' %>
+        <%= link_to 'ラベル一覧', labels_path, id: 'labels-index' %>
+        <%= link_to 'ラベルを登録する', new_label_path, id: 'new-label' %>
         <% if current_user.admin? %>
           <%= link_to 'ユーザ一覧', admin_users_path, id: 'users-index' %>
           <%= link_to 'ユーザを登録する', new_admin_user_path, id: 'add-user' %>

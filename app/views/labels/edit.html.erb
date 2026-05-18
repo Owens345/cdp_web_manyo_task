@@ -1,0 +1,16 @@
+<h1>ラベル編集ページ</h1>
+<% if @label.errors.any? %>
+  <ul>
+    <% @label.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+<% end %>
+<%= form_with model: @label, local: true do |f| %>
+  <div>
+    <%= f.label :name, '名前' %>
+    <%= f.text_field :name %>
+  </div>
+  <%= f.submit '更新する' %>
+<% end %>
+<%= link_to '戻る', labels_path, id: 'back' %>

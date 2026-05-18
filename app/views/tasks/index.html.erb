@@ -2,6 +2,10 @@
 
 <%= form_with url: tasks_path, scope: :search, method: :get, local: true do |f| %>
   <div>
+    <%= f.label :label, 'ラベル' %>
+    <%= f.select :label, current_user.labels.map { |l| [l.name, l.id] }, { include_blank: true }, { id: 'search_label' } %>
+  </div>
+  <div>
     <%= f.label :title, t('views.tasks.index.search_title') %>
     <%= f.text_field :title, value: params.dig(:search, :title) %>
   </div>
