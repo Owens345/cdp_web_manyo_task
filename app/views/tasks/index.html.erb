@@ -2,17 +2,34 @@
 
 <%= form_with url: tasks_path, scope: :search, method: :get, local: true do |f| %>
   <div>
-    <%= f.label :title, t('views.tasks.index.search_title') %>
-    <%= f.text_field :title, value: params.dig(:search, :title) %>
+    <%= f.label :label, 'ラベル' %>
+    <%= f.select :label,
+                 current_user.labels.map { |l| [l.name, l.id] },
+                 { include_blank: true },
+                 { id: 'search_label', class: 'form-control' } %>
   </div>
+
+  <div>
+    <%= f.label :title, t('views.tasks.index.search_title') %>
+    <%= f.text_field :title,
+                     value: params.dig(:search, :title),
+                     class: 'form-control' %>
+  </div>
+
   <div>
     <%= f.label :status, t('views.tasks.index.search_status') %>
-    <%= f.select :status, Task.statuses.keys.map { |s| [t("status.#{s}"), s] }, { include_blank: true } %>
+    <%= f.select :status,
+                 Task.statuses.keys.map { |s| [t("status.#{s}"), s] },
+                 { include_blank: true },
+                 class: 'form-control' %>
   </div>
-  <%= f.submit t('views.tasks.index.search_button'), id: 'search_task' %>
+
+  <%= f.submit t('views.tasks.index.search_button'),
+               id: 'search_task',
+               class: 'btn btn-primary' %>
 <% end %>
 
-<table>
+<table class="table table-bordered">
   <thead>
     <tr>
       <th><%= Task.human_attribute_name(:title) %></th>
@@ -21,9 +38,10 @@
       <th><%= link_to t('views.tasks.index.priority'), sort_priority: true %></th>
       <th><%= Task.human_attribute_name(:status) %></th>
       <th><%= Task.human_attribute_name(:created_at) %></th>
-      <th></th>
+      <th colspan="3"></th>
     </tr>
   </thead>
+
   <tbody>
     <% @tasks.each do |task| %>
       <tr>
@@ -33,11 +51,29 @@
         <td><%= t("priority.#{task.priority}") %></td>
         <td><%= t("status.#{task.status}") %></td>
         <td><%= task.created_at %></td>
-        <td><%= link_to t('views.tasks.index.show'), task_path(task), class: 'show-task' %></td>
-        <td><%= link_to t('views.tasks.index.edit'), edit_task_path(task), class: 'edit-task' %></td>
-        <td><%= link_to t('views.tasks.index.destroy'), task_path(task), method: :delete, data: { confirm: t('views.tasks.index.confirm') }, class: 'destroy-task' %></td>
+
+        <td>
+          <%= link_to t('views.tasks.index.show'),
+                      task_path(task),
+                      class: 'show-task btn btn-info btn-sm' %>
+        </td>
+
+        <td>
+          <%= link_to t('views.tasks.index.edit'),
+                      edit_task_path(task),
+                      class: 'edit-task btn btn-warning btn-sm' %>
+        </td>
+
+        <td>
+          <%= link_to t('views.tasks.index.destroy'),
+                      task_path(task),
+                      method: :delete,
+                      data: { confirm: t('views.tasks.index.confirm') },
+                      class: 'destroy-task btn btn-danger btn-sm' %>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
 <%= paginate @tasks %>

@@ -3,6 +3,8 @@ ja:
     models:
       task: タスク
       user: ユーザ
+      label: ラベル
+
     attributes:
       task:
         title: タイトル
@@ -11,37 +13,56 @@ ja:
         deadline_on: 終了期限
         priority: 優先度
         status: ステータス
+
       user:
         name: 名前
         email: メールアドレス
         password: パスワード
         password_confirmation: パスワード（確認）
+
+      label:
+        name: 名前
+
     errors:
       models:
         task:
           attributes:
             title:
               blank: "タイトルを入力してください"
+
             content:
               blank: "内容を入力してください"
+
             deadline_on:
               blank: "終了期限を入力してください"
+
             priority:
               blank: "優先度を入力してください"
+
             status:
               blank: "ステータスを入力してください"
+
         user:
           attributes:
             name:
               blank: "名前を入力してください"
+
             email:
               blank: "メールアドレスを入力してください"
               taken: "メールアドレスはすでに使用されています"
+
             password:
               blank: "パスワードを入力してください"
               too_short: "パスワードは6文字以上で入力してください"
+
             password_confirmation:
               confirmation: "パスワード（確認）とパスワードの入力が一致しません"
+
+        label:
+          attributes:
+            name:
+              blank: "名前を入力してください"
+
   views:
     tasks:
       index:
@@ -58,31 +79,38 @@ ja:
         search_title: タイトル
         search_status: ステータス
         search_button: 検索
+
       new:
         title: タスク登録ページ
         submit: 登録する
         back: 戻る
+
       show:
         title: タスク詳細ページ
         edit: 編集
         back: 戻る
+
       edit:
         title: タスク編集ページ
         submit: 更新する
         back: 戻る
+
   priority:
     low: 低
     medium: 中
     high: 高
+
   status:
     not_started: 未着手
     in_progress: 着手中
     completed: 完了
+
   flash:
     task:
       created: タスクを登録しました
       updated: タスクを更新しました
       destroyed: タスクを削除しました
+
   nav:
     tasks_index: タスク一覧
     new_task: タスクを登録する

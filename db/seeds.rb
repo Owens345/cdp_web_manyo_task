@@ -1,19 +1,17 @@
-Task.destroy_all
-User.destroy_all
+Task.delete_all
+User.delete_all
 
-admin = User.create!(
-  name: 'admin',
-  email: 'admin@example.com',
-  password: 'password',
-  admin: true
-)
+admin = User.find_or_create_by!(email: 'admin@example.com') do |u|
+  u.name = 'admin'
+  u.password = 'password'
+  u.admin = true
+end
 
-user = User.create!(
-  name: 'user',
-  email: 'user@example.com',
-  password: 'password',
-  admin: false
-)
+user = User.find_or_create_by!(email: 'user@example.com') do |u|
+  u.name = 'user'
+  u.password = 'password'
+  u.admin = false
+end
 
 25.times do |i|
   Task.create!(
